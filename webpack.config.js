@@ -8,7 +8,7 @@ module.exports = ({ production: isProd }) => {
   return ({
     mode: isProd ? 'production' : 'development',
 
-    devtool: "cheap-module-eval-source-map",
+    devtool: "cheap-module-source-map",
 
     entry: SRC,
 
