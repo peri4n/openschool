@@ -1,0 +1,57 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "John",
+      "surname": "Doe",
+      "birthday": "01.01.1990",
+      "classId": 1
+    },
+    {
+      "id": 2,
+      "name": "Foo",
+      "surname": "Bar",
+      "birthday": "02.01.1990",
+      "classId": 1
+    },
+    {
+      "id": 2,
+      "name": "Foo",
+      "surname": "Bazz",
+      "birthday": "04.01.1995",
+      "classId": 2
+    }
+  ],
+  "teachers": [
+    {
+      "id": 1,
+      "name": "Susi",
+      "surname": "Bazz"
+    },
+    {
+      "id": 2,
+      "name": "Blubb",
+      "surname": "Peach"
+    }
+  ],
+  "classes": [
+    {
+      "id": 1,
+      "stage": 1,
+      "suffix": "a",
+      "teacherId": 1
+    },
+    {
+      "id": 2,
+      "stage": 1,
+      "suffix": "b",
+      "teacherId": 1
+    },
+    {
+      "id": 3,
+      "stage": 2,
+      "suffix": "a",
+      "teacherId": 2
+    }
+  ]
+}
