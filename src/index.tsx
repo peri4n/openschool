@@ -1,12 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux"
-import { applyMiddleware, createStore } from "@reduxjs/toolkit"
-import thunk from "redux-thunk"
-import reducer from "./store/reducer"
-import App from "./App"
-
-const store = createStore(reducer, applyMiddleware(thunk))
+import { store } from "./store"
+import App from "./components/App"
 
 ReactDOM.render(
     <React.StrictMode>
@@ -15,3 +11,4 @@ ReactDOM.render(
         </Provider>
     </React.StrictMode>,
     document.getElementById("root"));
+export { Student } from "./model/student"

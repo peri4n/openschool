@@ -1,5 +1,5 @@
 import { Action } from "@reduxjs/toolkit"
-import { Student } from "./reducer"
+import { Student } from "../model/student"
 
 export type StudentsCommand = FetchStudentsStarted | FetchStudentsSucceeded | FetchStudentsFailed
 

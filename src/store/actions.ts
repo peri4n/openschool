@@ -1,7 +1,7 @@
 import * as api from "../api"
 import { ActionCreator } from "@reduxjs/toolkit"
 import { FetchStudentsFailed, FetchStudentsStarted, FetchStudentsSucceeded } from "./types"
-import { Student } from "./reducer"
+import { Student } from "../model/student"
 
 const fetchStudentsStarted: ActionCreator<FetchStudentsStarted> = () => {
     return {

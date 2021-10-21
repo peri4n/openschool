@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const Teacher = () => {
+export const TeachersPage = () => {
     return (
         <div>Teacher</div>
     )
