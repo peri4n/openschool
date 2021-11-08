@@ -1,10 +1,17 @@
-import { applyMiddleware, createStore } from "@reduxjs/toolkit"
-import reducer from "./reducer"
-import thunk from "redux-thunk"
-import { Student } from "../model/student"
+import { configureStore } from "@reduxjs/toolkit"
+import studentsReducer from "./students"
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux"
 
-export interface AppState {
-    students: Student[]
-}
+export const store = configureStore({
+    reducer: studentsReducer,
+    devTools: process.env.NODE_ENV !== 'production',
+})
 
-export const store = createStore(reducer, applyMiddleware(thunk))
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+
+export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+
+

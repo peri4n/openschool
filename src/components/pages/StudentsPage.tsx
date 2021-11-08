@@ -1,17 +1,34 @@
 import * as React from "react";
-import { Student } from "../../model/student"
+import { useEffect } from "react";
+import { fetchStudents } from "../../store/students"
+import { useAppDispatch, useAppSelector } from "../../store"
 
-interface StudentProps {
-    students: Student[]
-}
+export const StudentsPage = () => {
 
-export const StudentsPage = (props: StudentProps) => {
+    const dispatch = useAppDispatch();
+
+    const state = useAppSelector(state => state)
+
+    useEffect(() => {
+        dispatch(fetchStudents())
+    }, [])
+
+    function toHeader(loading: string) {
+        switch (loading) {
+            case "idle": return "Fetching users";
+            case "error": return "Error while fetching users";
+            case "done": return "Students";
+        }
+
+    }
 
     return (
         <div>
-            <div>Students</div>
+            <div>{// @ts-ignore
+                toHeader(state.loading)}</div>
             {
-                props.students.map(student => {
+                // @ts-ignore
+                state.entities.map(student => {
                     return <div key={student.id}> { student.name } </div>
                 })
             }
