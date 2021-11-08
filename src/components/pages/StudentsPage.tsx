@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import { fetchStudents } from "../../store/students"
 import { useAppDispatch, useAppSelector } from "../../store"
+import { LinearProgress } from "@material-ui/core"
 
 export const StudentsPage = () => {
 
@@ -13,23 +14,13 @@ export const StudentsPage = () => {
         dispatch(fetchStudents())
     }, [])
 
-    function toHeader(loading: string) {
-        switch (loading) {
-            case "idle": return "Fetching users";
-            case "error": return "Error while fetching users";
-            case "done": return "Students";
-        }
-
-    }
-
     return (
         <div>
-            <div>{// @ts-ignore
-                toHeader(state.loading)}</div>
+            <div>{ state.loading && <LinearProgress /> }</div>
             {
                 // @ts-ignore
                 state.entities.map(student => {
-                    return <div key={student.id}> { student.name } </div>
+                    return <div key={ student.id }> { student.name } </div>
                 })
             }
         </div>

@@ -14,7 +14,7 @@ const studentsSlice = createSlice({
     name: "students",
     initialState: {
         entities: [] as Student[],
-        loading: "idle"
+        loading: true,
     },
     reducers: {
     },
@@ -22,12 +22,12 @@ const studentsSlice = createSlice({
         builder.addCase(fetchStudents.fulfilled, (state, action) => {
             // @ts-ignore
             state.entities = action.payload
-            state.loading = "done"
+            state.loading = false
         })
 
         builder.addCase(fetchStudents.rejected, (state, action) => {
             // @ts-ignore
-            state.loading = "error"
+            state.loading = true
         })
     }
 })
