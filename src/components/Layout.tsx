@@ -2,20 +2,13 @@ import * as React from "react";
 import {
   AppBar,
   createStyles,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   makeStyles,
   Theme,
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
-import { LocalLibrary, School } from "@material-ui/icons";
+import { MenuDrawer } from "./MenuDrawer";
 
-const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,16 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
-    },
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    drawerContainer: {
-      overflow: "auto",
     },
     content: {
       flexGrow: 1,
@@ -49,20 +32,6 @@ type LayoutProps = {
 export const Layout = ({ children }: LayoutProps) => {
   const classes = useStyles();
 
-  const history = useHistory();
-
-  const links = [
-    {
-      text: "Teacher",
-      icon: <School />,
-      path: "teacher",
-    },
-    {
-      text: "Students",
-      icon: <LocalLibrary />,
-      path: "students",
-    },
-  ];
 
   return (
     <div className={classes.root}>
@@ -75,30 +44,7 @@ export const Layout = ({ children }: LayoutProps) => {
         </Toolbar>
       </AppBar>
       {/* Side Drawer */}
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <Toolbar />
-        {/* List / Links */}
-        <div className={classes.drawerContainer}>
-          <List>
-            {links.map((link) => (
-              <ListItem
-                button
-                key={link.text}
-                onClick={() => history.push(link.path)}
-              >
-                <ListItemIcon>{link.icon}</ListItemIcon>
-                <ListItemText primary={link.text} />
-              </ListItem>
-            ))}
-          </List>
-        </div>
-      </Drawer>
+      <MenuDrawer/>
       <main className={classes.content}>
         <Toolbar />
         {children}
