@@ -1,31 +1,31 @@
-const { resolve, join } = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const { resolve, join } = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
-const SRC = join(__dirname, 'src');
+const SRC = join(__dirname, "src");
 
 module.exports = ({ production: isProd }) => {
-  return ({
-    mode: isProd ? 'production' : 'development',
+  return {
+    mode: isProd ? "production" : "development",
 
     devtool: "cheap-module-source-map",
 
     entry: SRC,
 
     output: {
-      filename: 'bundle.js',
-      path: resolve(__dirname, 'dist'),
+      filename: "bundle.js",
+      path: resolve(__dirname, "dist"),
     },
 
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.json'],
+      extensions: [".ts", ".tsx", ".js", ".json"],
     },
 
     module: {
       rules: [
         {
           test: /\.(ts|js)x?$/,
-          loader: 'ts-loader',
+          loader: "ts-loader",
           exclude: /node_modules/,
         },
       ],
@@ -34,9 +34,9 @@ module.exports = ({ production: isProd }) => {
     plugins: [
       new HtmlWebpackPlugin({
         inject: true,
-        template: join(SRC, 'index.html'),
+        template: join(SRC, "index.html"),
       }),
       new ForkTsCheckerWebpackPlugin(),
     ],
-  });
+  };
 };

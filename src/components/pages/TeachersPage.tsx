@@ -1,7 +1,5 @@
-import * as React from 'react';
+import * as React from "react";
 
 export const TeachersPage = () => {
-    return (
-        <div>Teacher</div>
-    )
-}
+  return <div>Teacher</div>;
+};

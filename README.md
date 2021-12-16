@@ -1,6 +1,7 @@
 # Open school
 
 ## Scripts
+
 ```sh
 # run webpack-dev-server
 npm run serve
