@@ -6,7 +6,7 @@ import {
   Toolbar,
 } from "@material-ui/core";
 import { MenuDrawer } from "./MenuDrawer";
-import { TopBar } from "./TobBar";
+import { TopBar } from "./TopBar";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

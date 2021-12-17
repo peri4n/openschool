@@ -2,22 +2,22 @@
   "students": [
     {
       "id": 1,
-      "name": "John",
-      "surname": "Doe",
+      "firstName": "John",
+      "lastName": "Doe",
       "birthday": "01.01.1990",
       "classId": 1
     },
     {
       "id": 2,
-      "name": "Foo",
-      "surname": "Bar",
+      "firstName": "Foo",
+      "lastName": "Bar",
       "birthday": "02.01.1990",
       "classId": 1
     },
     {
       "id": 3,
-      "name": "Luke",
-      "surname": "Bazz",
+      "firstName": "Luke",
+      "lastName": "Bazz",
       "birthday": "04.01.1995",
       "classId": 2
     }

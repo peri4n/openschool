@@ -1,4 +1,9 @@
+import { Adress } from "./Adress";
+
 export interface Student {
   id: number;
-  name: string;
+  birthday: Date;
+  firstName: string;
+  lastName: string;
+  adress: Adress;
 }

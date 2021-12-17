@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { fetchStudents } from "../../store/students";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { LinearProgress } from "@material-ui/core";
+import { StudentsList } from "../students/StudentsList";
 
 export const StudentsPage = () => {
   const dispatch = useAppDispatch();
@@ -16,11 +17,7 @@ export const StudentsPage = () => {
   return (
     <div>
       <div>{state.loading && <LinearProgress />}</div>
-      {
-        state.entities.map((student) => {
-          return <div key={student.id}> {student.name} </div>;
-        })
-      }
+      <StudentsList students={state.entities} />
     </div>
   );
 };
