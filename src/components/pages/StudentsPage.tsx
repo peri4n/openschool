@@ -17,7 +17,6 @@ export const StudentsPage = () => {
     <div>
       <div>{state.loading && <LinearProgress />}</div>
       {
-        // @ts-ignore
         state.entities.map((student) => {
           return <div key={student.id}> {student.name} </div>;
         })

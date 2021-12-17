@@ -2,6 +2,7 @@
   "scripts": {
     "serve": "webpack s",
     "test": "jest",
+    "lint": "eslint src",
     "format": "prettier --write .",
     "build:watch": "webpack w",
     "build:prod": "webpack b --env production"
@@ -25,7 +26,12 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.1.9",
     "@types/redux-mock-store": "^1.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
     "babel-jest": "^27.3.1",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-react": "^7.27.1",
     "fork-ts-checker-webpack-plugin": "^6.3.3",
     "html-webpack-plugin": "^5.3.2",
     "jest": "^27.3.1",

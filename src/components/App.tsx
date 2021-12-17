@@ -5,12 +5,11 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import { Layout } from "./Layout";
+import { Layout } from "./layout/Layout";
 import { TeachersPage } from "./pages/TeachersPage";
 import { StudentsPage } from "./pages/StudentsPage";
 
-// @ts-ignore
-export const App = (props) => {
+export const App = () => {
   return (
     <Router>
       <Layout>
