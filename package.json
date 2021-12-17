@@ -4,8 +4,8 @@
     "test": "jest",
     "lint": "eslint src",
     "format": "prettier --write .",
-    "build:watch": "webpack w",
-    "build:prod": "webpack b --env production"
+    "build:watch": "npx webpack w",
+    "build:prod": "npx webpack b --env production"
   },
   "dependencies": {
     "@material-ui/core": "^4.12.3",
