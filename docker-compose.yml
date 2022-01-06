@@ -1,0 +1,13 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  web:
+    build: .
+    ports:
+      - "8000:80"
+    links:
+      - keycloak
+  keycloak:
+    image: jboss/keycloak
+    environment:
+      KEYCLOAK_USER=admin
+      KEYCLOAK_PASSWORD=admin

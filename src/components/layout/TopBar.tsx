@@ -7,7 +7,7 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
-
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,11 +20,15 @@ const useStyles = makeStyles((theme: Theme) =>
 export const TopBar = () => {
   const classes = useStyles();
 
+  const history = useHistory();
+
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
-        <Typography variant="h6" noWrap>
-          Permanent drawer
+        <Typography variant="h6" noWrap
+              onClick={() => history.push("/")}
+        >
+          Open School
         </Typography>
       </Toolbar>
     </AppBar>

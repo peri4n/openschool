@@ -4,11 +4,31 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { App } from "./components/App";
 
+import { initOptions, keycloak } from './keycloak'
+import { ReactKeycloakProvider } from "@react-keycloak/web";
+import { LinearProgress } from "@material-ui/core";
+
+const eventLogger = (event: unknown, error: unknown) => {
+  console.log('onKeycloakEvent', event, error)
+}
+
+const tokenLogger = (tokens: unknown) => {
+  console.log('onKeycloakTokens', tokens)
+}
+
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
+    <ReactKeycloakProvider
+      initOptions={initOptions}
+      authClient={keycloak}
+      onEvent={eventLogger}
+      onTokens={tokenLogger}
+      LoadingComponent={<LinearProgress />}
+    >
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ReactKeycloakProvider>
+  </React.StrictMode >,
   document.getElementById("root")
 );
