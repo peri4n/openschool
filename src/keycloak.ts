@@ -5,7 +5,7 @@ import Keycloak, { KeycloakInitOptions } from 'keycloak-js';
 export const keycloak = Keycloak({
   url: 'http://localhost:8080/auth',
   realm: 'openschool',
-  clientId: 'openschool_webapp'
+  clientId: 'openschool-frontend'
 });
 
 export const initOptions: KeycloakInitOptions = {

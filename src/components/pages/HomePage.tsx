@@ -10,7 +10,7 @@ export const HomePage = () => {
 
   useEffect(() => {
     keycloak.loadUserProfile().then((res) => {
-      setName(res.username)
+      setName(res.firstName + " " + res.lastName)
     })
   }, [])
 

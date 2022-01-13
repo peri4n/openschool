@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "serve": "webpack s",
+    "serve": "webpack s --port 8000",
     "test": "jest",
     "lint": "eslint src",
     "format": "prettier --write .",
