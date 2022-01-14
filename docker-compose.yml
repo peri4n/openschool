@@ -1,12 +1,22 @@
-version: "3.9"  # optional since v1.27.0
 services:
   web:
+    profiles: ["frontend"]
     build: .
     ports:
       - "8000:80"
-    links:
+    depends_on:
       - keycloak
+      - db
+  db:
+    profiles: ["dev"]
+    build: db 
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./db:/data
+    command: -H 0.0.0.0 -w /data/data.json
   keycloak:
+    profiles: ["dev"]
     image: jboss/keycloak
     volumes:
       - ./keycloak:/tmp/

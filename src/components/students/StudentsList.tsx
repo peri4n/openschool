@@ -37,8 +37,8 @@ export const StudentsList = (props: StudentsListProps) => {
           {props.students.map((student) => (
             <TableRow key={student.id}>
               <TableCell align="right">{student.id} </TableCell>
-              <TableCell align="right">{student.firstName}</TableCell>
-              <TableCell align="right">{student.lastName}</TableCell>
+              <TableCell align="right">{student.first}</TableCell>
+              <TableCell align="right">{student.last}</TableCell>
               <TableCell align="right">{student.birthday}</TableCell>
             </TableRow>
           ))}

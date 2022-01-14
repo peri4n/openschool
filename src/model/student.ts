@@ -3,7 +3,7 @@ import { Adress } from "./Adress";
 export interface Student {
   id: number;
   birthday: Date;
-  firstName: string;
-  lastName: string;
+  first: string;
+  last: string;
   adress: Adress;
 }
