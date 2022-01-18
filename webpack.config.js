@@ -31,6 +31,10 @@ module.exports = ({ production: isProd }) => {
       ],
     },
 
+    devServer: {
+      historyApiFallback: true,
+    },
+
     plugins: [
       new HtmlWebpackPlugin({
         inject: true,
