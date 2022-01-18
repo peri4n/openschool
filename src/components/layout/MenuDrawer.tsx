@@ -11,7 +11,7 @@ import {
   Toolbar,
 } from "@material-ui/core";
 import { LocalLibrary, School } from "@material-ui/icons";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -31,8 +31,6 @@ const useStyles = makeStyles((theme: Theme) =>
 export const MenuDrawer = () => {
 
   const classes = useStyles();
-
-  const history = useHistory();
 
   const links = [
     {
@@ -60,14 +58,15 @@ export const MenuDrawer = () => {
       <div className={classes.drawerContainer}>
         <List>
           {links.map((link) => (
-            <ListItem
-              button
-              key={link.text}
-              onClick={() => history.push(link.path)}
-            >
-              <ListItemIcon>{link.icon}</ListItemIcon>
-              <ListItemText primary={link.text} />
-            </ListItem>
+              <ListItem
+                button
+                component={Link}
+                key={link.text}
+                to={link.path}
+              >
+                <ListItemIcon>{link.icon}</ListItemIcon>
+                <ListItemText primary={link.text} />
+              </ListItem>
           ))}
         </List>
       </div>

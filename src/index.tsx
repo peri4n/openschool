@@ -7,6 +7,7 @@ import { App } from "./components/App";
 import { initOptions, keycloak } from './keycloak'
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 import { LinearProgress } from "@material-ui/core";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const eventLogger = (event: unknown, error: unknown) => {
   console.log('onKeycloakEvent', event, error)
@@ -26,7 +27,9 @@ ReactDOM.render(
       LoadingComponent={<LinearProgress />}
     >
       <Provider store={store}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </Provider>
     </ReactKeycloakProvider>
   </React.StrictMode >,

@@ -7,7 +7,7 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,13 +20,13 @@ const useStyles = makeStyles((theme: Theme) =>
 export const TopBar = () => {
   const classes = useStyles();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
         <Typography variant="h6" noWrap
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
         >
           Open School
         </Typography>
