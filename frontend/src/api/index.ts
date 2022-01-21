@@ -1,14 +1,22 @@
-import axios from "axios";
+import KcAdminClient from "@keycloak/keycloak-admin-client";
+import { Student } from "../model/Student"
 
-const API_BASE_URL = "http://localhost:3000";
-
-const client = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+const kcAdminClient = new KcAdminClient({
+    realmName: "openschool",
 });
 
-export function fetchStudents() {
-  return client.get("/students");
+export async function fetchStudents() {
+// Authorize with username / password
+    await kcAdminClient.auth({
+        username: "cafabko@gabueha.ee",
+        password: "Rachel",
+        grantType: "password",
+        clientId: "openschool-frontend"
+    });
+
+    const users = await kcAdminClient.users.find()
+    return users.map(user => {
+        return new Student(user.id, user.firstName, user.lastName)
+    })
 }
+

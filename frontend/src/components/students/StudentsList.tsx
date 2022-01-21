@@ -7,7 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Student } from "../../model/student";
+import { Student } from "../../model/Student";
 
 const useStyles = makeStyles({
   table: {
@@ -27,19 +27,17 @@ export const StudentsList = (props: StudentsListProps) => {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="right">ID</TableCell>
+            <TableCell align="left">ID</TableCell>
             <TableCell align="right">First Name</TableCell>
             <TableCell align="right">Last Name</TableCell>
-            <TableCell align="right">Birthday</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {props.students.map((student) => (
             <TableRow key={student.id}>
-              <TableCell align="right">{student.id} </TableCell>
+              <TableCell align="left">{student.id} </TableCell>
               <TableCell align="right">{student.first}</TableCell>
               <TableCell align="right">{student.last}</TableCell>
-              <TableCell align="right">{student.birthday}</TableCell>
             </TableRow>
           ))}
         </TableBody>

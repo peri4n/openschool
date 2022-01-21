@@ -18,11 +18,8 @@ services:
   keycloak:
     profiles: ["dev"]
     image: jboss/keycloak
-    volumes:
-      - ./keycloak:/tmp/
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-      KEYCLOAK_IMPORT: /tmp/export.json
     ports:
       - "8080:8080"
