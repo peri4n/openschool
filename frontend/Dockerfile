@@ -2,15 +2,15 @@ FROM node:14-alpine as build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package*.json .
 
-COPY webpack.config.js ./
+COPY webpack.config.js .
 
-COPY tsconfig.json ./
+COPY tsconfig.json .
 
 RUN npm install
 
-COPY src/ ./src
+COPY src src
 
 RUN npm run build:prod
 

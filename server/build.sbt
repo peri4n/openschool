@@ -9,7 +9,8 @@ lazy val server = (project in file("."))
     name := "server",
     version := "0.0.1-SNAPSHOT",
     scalaVersion := "3.1.0",
-    libraryDependencies ++= Seq(
+    assembly / mainClass := Some("org.openschool.server.Main"),
+      libraryDependencies ++= Seq(
       "org.http4s"      %% "http4s-ember-server" % Http4sVersion,
       "org.http4s"      %% "http4s-ember-client" % Http4sVersion,
       "org.http4s"      %% "http4s-circe"        % Http4sVersion,
