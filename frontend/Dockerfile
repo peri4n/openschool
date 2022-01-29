@@ -20,6 +20,4 @@ COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 
-RUN echo "You can access the app at http://localhost:9000"
-
 CMD [ "nginx", "-g", "daemon off;" ]
