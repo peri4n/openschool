@@ -1,22 +1,39 @@
 import KcAdminClient from "@keycloak/keycloak-admin-client";
 import { Student } from "../model/Student"
+import axios from "axios";
+
+const backendClient = axios.create({
+  baseURL: "http://localhost:8080"
+})
 
 const kcAdminClient = new KcAdminClient({
-    realmName: "openschool",
+  baseUrl: "http://localhost:8088/auth",
+  realmName: "openschool",
 });
 
-export async function fetchStudents() {
-// Authorize with username / password
-    await kcAdminClient.auth({
-        username: "cafabko@gabueha.ee",
-        password: "Rachel",
-        grantType: "password",
-        clientId: "openschool-frontend"
-    });
+export async function fetchStudents(): Promise<Student[]> {
+  // Authorize with username / password
+  await kcAdminClient.auth({
+    username: "cafabko@gabueha.ee",
+    password: "Rachel",
+    grantType: "password",
+    clientId: "openschool-frontend"
+  });
 
-    const users = await kcAdminClient.users.find()
-    return users.map(user => {
-        return new Student(user.id, user.firstName, user.lastName)
-    })
+  const users = await kcAdminClient.users.find()
+  return users.map(user => {
+    return new Student(user.id, user.firstName, user.lastName)
+  })
 }
+ 
+type FetchSystemInfoResponse = { schoolName: string }
 
+export async function fetchSystemInfo(): Promise<string> {
+  return backendClient
+    .get<FetchSystemInfoResponse>("/info")
+    .then(resp => {
+        console.log(resp)
+        return resp.data.schoolName
+    }
+  )
+}

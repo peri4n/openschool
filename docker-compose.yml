@@ -3,20 +3,19 @@ services:
     profiles: ["frontend"]
     build: ./frontend
     ports:
-      - "8000:8000"
+      - "8000:80"
     depends_on:
       - keycloak
-      - db
+      - backend
   backend:
     profiles: ["backend"]
     build: ./server
     ports:
-      - "8080:9000"
+      - "8080:8080"
   keycloak:
-    profiles: ["frontend", "backend"]
     image: jboss/keycloak
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
     ports:
-      - "8080:8080"
+      - "8088:8080"

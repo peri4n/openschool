@@ -8,6 +8,9 @@ import org.http4s.ember.client.EmberClientBuilder
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.implicits._
 import org.http4s.server.middleware.Logger
+import org.http4s.server.middleware.CORS
+import org.http4s.headers.Origin
+import org.http4s.Uri
 
 object BackendServer:
 
@@ -15,16 +18,26 @@ object BackendServer:
     for {
       client <- Stream.resource(EmberClientBuilder.default[F].build)
       helloWorldAlg = HelloWorld.impl[F]
+      systemInfoAlg = SystemInfo.impl[F]
       jokeAlg = Jokes.impl[F](client)
+
+      corsOriginSvc = CORS.policy
+        .withAllowOriginHost(Set(
+          Origin.Host(Uri.Scheme.https, Uri.RegName("localhost"), 8000.some),
+          Origin.Host(Uri.Scheme.http, Uri.RegName("localhost"), 8000.some),
+        ))
+        .withAllowCredentials(false)
 
       // Combine Service Routes into an HttpApp.
       // Can also be done via a Router if you
       // want to extract a segments not checked
       // in the underlying routes.
       httpApp = (
+        corsOriginSvc.apply(
         BackendRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
+        BackendRoutes.systemInfoRoutes[F](systemInfoAlg) <+>
         BackendRoutes.jokeRoutes[F](jokeAlg)
-      ).orNotFound
+      )).orNotFound
 
       // With Middlewares in place
       finalHttpApp = Logger.httpApp(true, true)(httpApp)

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import * as api from "../api";
-import { Student } from "../model/Student";
+import * as api from "../../api";
+import { Student } from "../../model/Student";
 
 interface StudentsState {
   entities: Student []

@@ -19,7 +19,9 @@ const SCHOOL_ENTRY_AGE = 6
 const SCHOOL_EXIT_AGE = 19;
 
 (async () => {
-  const kcAdminClient = new KcAdminClient();
+  const kcAdminClient = new KcAdminClient({
+    baseUrl: 'http://127.0.0.1:8088/auth',
+  });
 
 
   // Authorize with username / password

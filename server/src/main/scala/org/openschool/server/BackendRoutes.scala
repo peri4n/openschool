@@ -18,6 +18,18 @@ object BackendRoutes:
         } yield resp
     }
 
+  def systemInfoRoutes[F[_]: Sync](J: SystemInfo[F]): HttpRoutes[F] =
+    val dsl = new Http4sDsl[F]{}
+    import dsl._
+    HttpRoutes.of[F] {
+      case GET -> Root / "info" =>
+        for {
+          info <- J.get
+          resp <- Ok(info)
+        } yield resp
+    }
+
+
   def helloWorldRoutes[F[_]: Sync](H: HelloWorld[F]): HttpRoutes[F] =
     val dsl = new Http4sDsl[F]{}
     import dsl._

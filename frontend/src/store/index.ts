@@ -1,9 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
-import studentsReducer from "./students";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { combineReducers, configureStore } from "@reduxjs/toolkit"
+import studentsReducer from "./students/"
+import systemInfoReducer from "./systemInfo"
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux"
 
 export const store = configureStore({
-  reducer: studentsReducer,
+  reducer: combineReducers({
+    students: studentsReducer,
+    systemInfo: systemInfoReducer
+  }),
   devTools: process.env.NODE_ENV !== "production",
 });
 

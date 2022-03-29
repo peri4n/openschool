@@ -8,7 +8,7 @@ import { StudentsList } from "../students/StudentsList";
 export const StudentsPage = () => {
   const dispatch = useAppDispatch();
 
-  const state = useAppSelector((state) => state);
+  const state = useAppSelector(state => state.students);
 
   useEffect(() => {
     dispatch(fetchStudents());
