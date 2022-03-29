@@ -21,34 +21,36 @@ object BackendServer:
       systemInfoAlg = SystemInfo.impl[F]
       jokeAlg = Jokes.impl[F](client)
 
-      corsOriginSvc = CORS.policy
-        .withAllowOriginHost(Set(
-          Origin.Host(Uri.Scheme.https, Uri.RegName("localhost"), 8000.some),
-          Origin.Host(Uri.Scheme.http, Uri.RegName("localhost"), 8000.some),
-        ))
+      corsOriginSettings = CORS.policy
+        .withAllowOriginHost(
+          Set(
+            Origin.Host(Uri.Scheme.https, Uri.RegName("localhost"), 8000.some),
+            Origin.Host(Uri.Scheme.http, Uri.RegName("localhost"), 8000.some)
+          )
+        )
         .withAllowCredentials(false)
 
       // Combine Service Routes into an HttpApp.
       // Can also be done via a Router if you
       // want to extract a segments not checked
       // in the underlying routes.
-      httpApp = (
-        corsOriginSvc.apply(
+      httpApp = corsOriginSettings(
         BackendRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
-        BackendRoutes.systemInfoRoutes[F](systemInfoAlg) <+>
-        BackendRoutes.jokeRoutes[F](jokeAlg)
-      )).orNotFound
+          BackendRoutes.systemInfoRoutes[F](systemInfoAlg) <+>
+          BackendRoutes.jokeRoutes[F](jokeAlg)
+      ).orNotFound
 
       // With Middlewares in place
       finalHttpApp = Logger.httpApp(true, true)(httpApp)
 
       exitCode <- Stream.resource(
-        EmberServerBuilder.default[F]
+        EmberServerBuilder
+          .default[F]
           .withHost(ipv4"0.0.0.0")
           .withPort(port"8080")
           .withHttpApp(finalHttpApp)
           .build >>
-        Resource.eval(Async[F].never)
+          Resource.eval(Async[F].never)
       )
     } yield exitCode
   }.drain

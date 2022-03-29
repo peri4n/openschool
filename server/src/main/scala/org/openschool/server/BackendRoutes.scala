@@ -8,35 +8,31 @@ import org.http4s.dsl.Http4sDsl
 object BackendRoutes:
 
   def jokeRoutes[F[_]: Sync](J: Jokes[F]): HttpRoutes[F] =
-    val dsl = new Http4sDsl[F]{}
+    val dsl = new Http4sDsl[F] {}
     import dsl._
-    HttpRoutes.of[F] {
-      case GET -> Root / "joke" =>
-        for {
-          joke <- J.get
-          resp <- Ok(joke)
-        } yield resp
+    HttpRoutes.of[F] { case GET -> Root / "joke" =>
+      for {
+        joke <- J.get
+        resp <- Ok(joke)
+      } yield resp
     }
 
   def systemInfoRoutes[F[_]: Sync](J: SystemInfo[F]): HttpRoutes[F] =
-    val dsl = new Http4sDsl[F]{}
+    val dsl = new Http4sDsl[F] {}
     import dsl._
-    HttpRoutes.of[F] {
-      case GET -> Root / "info" =>
-        for {
-          info <- J.get
-          resp <- Ok(info)
-        } yield resp
+    HttpRoutes.of[F] { case GET -> Root / "info" =>
+      for {
+        info <- J.get
+        resp <- Ok(info)
+      } yield resp
     }
 
-
   def helloWorldRoutes[F[_]: Sync](H: HelloWorld[F]): HttpRoutes[F] =
-    val dsl = new Http4sDsl[F]{}
+    val dsl = new Http4sDsl[F] {}
     import dsl._
-    HttpRoutes.of[F] {
-      case GET -> Root / "hello" / name =>
-        for {
-          greeting <- H.hello(HelloWorld.Name(name))
-          resp <- Ok(greeting)
-        } yield resp
+    HttpRoutes.of[F] { case GET -> Root / "hello" / name =>
+      for {
+        greeting <- H.hello(HelloWorld.Name(name))
+        resp <- Ok(greeting)
+      } yield resp
     }
