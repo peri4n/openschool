@@ -8,9 +8,22 @@ import { initOptions, keycloak } from './keycloak'
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 import { LinearProgress } from "@material-ui/core";
 import { BrowserRouter as Router } from "react-router-dom";
+import { setUserInfo } from "./store/userInfo";
 
-const eventLogger = (event: unknown, error: unknown) => {
-  console.log('onKeycloakEvent', event, error)
+const eventLogger = (event: string, error: unknown) => {
+  switch (event) {
+    case 'onAuthSuccess':
+      keycloak.loadUserProfile().then(profile => {
+        store.dispatch(setUserInfo({
+          firstName: profile.firstName!,
+          lastName: profile.lastName!,
+          token: keycloak.token!
+          }))
+      })
+      break;
+    default:
+      break;
+  }
 }
 
 const tokenLogger = (tokens: unknown) => {

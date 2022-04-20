@@ -1,22 +1,19 @@
-import { useKeycloak } from "@react-keycloak/web";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useAppSelector } from "../../store";
 
 export const HomePage = () => {
 
-  const { keycloak } = useKeycloak()
-
-  const [name, setName] = useState<string>()
-
-  useEffect(() => {
-    keycloak.loadUserProfile().then((res) => {
-      setName(res.firstName + " " + res.lastName)
-    })
-  }, [])
+  const state = useAppSelector(state => state.userInfo);
 
   return (
     <div>
-      Welcome {name}
+      <p>
+        Welcome {state.firstName} {state.lastName}
+      </p>
+
+      <p>
+        Your token is {state.token}
+      </p>
     </div>
   );
 };

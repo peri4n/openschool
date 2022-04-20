@@ -31,9 +31,11 @@ type FetchSystemInfoResponse = { schoolName: string }
 export async function fetchSystemInfo(): Promise<string> {
   return backendClient
     .get<FetchSystemInfoResponse>("/info")
-    .then(resp => {
-        console.log(resp)
-        return resp.data.schoolName
-    }
-  )
+    .then(resp => resp.data.schoolName)
+}
+
+export async function fetchUserInfo(): Promise<string> {
+  return backendClient
+    .get<FetchSystemInfoResponse>("/info")
+    .then(resp => resp.data.schoolName)
 }
