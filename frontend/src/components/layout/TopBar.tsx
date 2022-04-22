@@ -10,7 +10,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { fetchSystemInfo } from "../../store/systemInfo";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { RootState, useAppDispatch } from "../../store";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,14 +21,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const TopBar = () => {
+interface TopBarProps {
+  schoolName: string
+}
+
+const TopBar = (props: TopBarProps) => {
   const classes = useStyles();
 
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-
-  const state = useAppSelector(state => state.systemInfo);
 
   useEffect(() => {
       dispatch(fetchSystemInfo());
@@ -39,9 +42,15 @@ export const TopBar = () => {
         <Typography variant="h6" noWrap
               onClick={() => navigate("/")}
         >
-          {state.schoolName}
+          {props.schoolName}
         </Typography>
       </Toolbar>
     </AppBar>
   );
 };
+
+const mapStateToProps = (state: RootState) => ({
+  schoolName: state.systemInfo.schoolName
+})
+
+export default connect(mapStateToProps)(TopBar)
