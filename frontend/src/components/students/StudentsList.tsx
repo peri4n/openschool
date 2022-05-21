@@ -21,6 +21,8 @@ type StudentsListProps = {
 
 export const StudentsList = (props: StudentsListProps) => {
   const classes = useStyles();
+  console.log(props);
+  
 
   return (
     <TableContainer component={Paper}>

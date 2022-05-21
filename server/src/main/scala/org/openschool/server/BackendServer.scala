@@ -19,6 +19,7 @@ object BackendServer:
       client <- Stream.resource(EmberClientBuilder.default[F].build)
       helloWorldAlg = HelloWorld.impl[F]
       systemInfoAlg = SystemInfo.impl[F]
+      users = Users.impl[F]
       jokeAlg = Jokes.impl[F](client)
 
       corsOriginSettings = CORS.policy
@@ -37,7 +38,8 @@ object BackendServer:
       httpApp = corsOriginSettings(
         BackendRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
           BackendRoutes.systemInfoRoutes[F](systemInfoAlg) <+>
-          BackendRoutes.jokeRoutes[F](jokeAlg)
+          BackendRoutes.jokeRoutes[F](jokeAlg) <+>
+          BackendRoutes.usersRoutes[F](users)
       ).orNotFound
 
       // With Middlewares in place

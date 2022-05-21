@@ -17,6 +17,16 @@ object BackendRoutes:
       } yield resp
     }
 
+  def usersRoutes[F[_]: Sync](U: Users[F]): HttpRoutes[F] =
+    val dsl = new Http4sDsl[F] {}
+    import dsl._
+    HttpRoutes.of[F] { case GET -> Root / "users" =>
+      for {
+        users <- U.get
+        resp <- Ok(users)
+      } yield resp
+    }
+
   def systemInfoRoutes[F[_]: Sync](J: SystemInfo[F]): HttpRoutes[F] =
     val dsl = new Http4sDsl[F] {}
     import dsl._

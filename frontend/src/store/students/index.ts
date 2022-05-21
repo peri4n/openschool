@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 import * as api from "../../api";
 import { Student } from "../../model/Student";
 
@@ -9,8 +10,9 @@ interface StudentsState {
 
 export const fetchStudents = createAsyncThunk(
   "students/fetchUsers",
-  async (arg, thunkAPI) => {
-    return await api.fetchStudents()
+  async (arg, { getState }) => {
+    const state = (getState() as RootState).userInfo
+    return await api.fetchStudents(state.token)
   }
 );
 
