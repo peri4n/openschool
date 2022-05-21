@@ -28,3 +28,5 @@ const userInfoSlice = createSlice({
 export const { setUserInfo } = userInfoSlice.actions
 
 export default userInfoSlice.reducer;
+
+export { getFirstName } from "./selectors"

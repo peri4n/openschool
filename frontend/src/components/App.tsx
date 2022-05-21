@@ -6,7 +6,7 @@ import {
 import { Layout } from "./layout/Layout";
 import { TeachersPage } from "./pages/TeachersPage";
 import { StudentsPage } from "./pages/StudentsPage";
-import { HomePage } from "./pages/HomePage";
+import HomePage from "./pages/HomePage";
 
 export const App = () => {
 

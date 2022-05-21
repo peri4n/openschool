@@ -1,19 +1,38 @@
 import * as React from "react";
-import { useAppSelector } from "../../store";
+import { connect } from "react-redux";
+import { RootState } from "../../store";
+import { getFirstName } from "../../store/userInfo";
 
-export const HomePage = () => {
+interface HomePageProps {
+  firstName: string,
+  lastName: string,
+  token: string,
+}
 
-  const state = useAppSelector(state => state.userInfo);
+const HomePage = ({
+  firstName,
+  lastName,
+  token
+}: HomePageProps) => {
 
   return (
     <div>
       <p>
-        Welcome {state.firstName} {state.lastName}
+        Welcome {firstName} {lastName}
       </p>
 
       <p>
-        Your token is {state.token}
+        Your token is {token}
       </p>
     </div>
   );
 };
+
+const mapStateToProps = (state: RootState) => ({
+  firstName: getFirstName(state),
+  lastName: state.userInfo.lastName,
+  token: state.userInfo.token,
+})
+
+export default connect(mapStateToProps)(HomePage)
+
