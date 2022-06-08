@@ -64,6 +64,35 @@ const SCHOOL_EXIT_AGE = 19;
   });
   console.log(`Created group teachers: ${teachers.id}`)
 
+  // Standard users
+  const gender: "male" | "female" = (chance.gender() == "male") ? "male" : "female";
+  await kcAdminClient.users.create({
+    username: "anna@anna.com",
+    email: "anna@anna.com",
+    firstName: "Anna",
+    lastName: "Baxx",
+    emailVerified: true,
+    enabled: true,
+    groups: ["students"],
+    credentials: [{
+      type: "password",
+      value: "anna"
+    }],
+    attributes: {
+      gender: gender,
+      birthday: chance.birthday({
+        year: chance.year({
+          max: TODAY.getFullYear() - SCHOOL_ENTRY_AGE,
+          min: TODAY.getFullYear() - SCHOOL_EXIT_AGE,
+        }),
+      }),
+      address: chance.address(),
+      zip: chance.zip(),
+      city: chance.city(),
+      country: chance.country({ full: true }),
+    }
+  });
+
   // Students
   const number_of_students = 100
 
