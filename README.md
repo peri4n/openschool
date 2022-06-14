@@ -1,4 +1,5 @@
 [![Scala CI](https://github.com/peri4n/openschool/actions/workflows/scala.yml/badge.svg)](https://github.com/peri4n/openschool/actions/workflows/scala.yml)
+[![NodeJS with Webpack](https://github.com/peri4n/openschool/actions/workflows/webpack.yml/badge.svg)](https://github.com/peri4n/openschool/actions/workflows/webpack.yml)
 
 # Open school
 
