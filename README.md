@@ -1,3 +1,5 @@
+[![Scala CI](https://github.com/peri4n/openschool/actions/workflows/scala.yml/badge.svg)](https://github.com/peri4n/openschool/actions/workflows/scala.yml)
+
 # Open school
 
 OpenSchool is a project I started to learn about React and Redux at a production scale.
