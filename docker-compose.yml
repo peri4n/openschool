@@ -6,7 +6,6 @@ services:
       - "8000:80"
     depends_on:
       - keycloak
-      - backend
   backend:
     profiles: ["backend"]
     build: ./server
