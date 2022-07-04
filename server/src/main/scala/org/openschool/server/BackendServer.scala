@@ -37,9 +37,9 @@ object BackendServer:
       // in the underlying routes.
       httpApp = corsOriginSettings(
         BackendRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
-          BackendRoutes.systemInfoRoutes[F](systemInfoAlg) <+>
+          API.systemInfoRoutes[F](systemInfoAlg) <+>
           BackendRoutes.jokeRoutes[F](jokeAlg) <+>
-          BackendRoutes.swaggerRoute[F] <+>
+          API.swaggerRoute[F] <+>
           BackendRoutes.usersRoutes[F](users)
       ).orNotFound
 

@@ -6,17 +6,8 @@ import cats.effect.Sync
 import cats.implicits._
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
-import sttp.apispec.openapi.OpenAPI
-import sttp.tapir._
-import sttp.tapir.docs.openapi.OpenAPIDocsInterpreter
-import sttp.tapir.generic.auto._
-import sttp.tapir.json.circe._
-import sttp.tapir.server.http4s.Http4sServerInterpreter
-import sttp.tapir.swagger.bundle.SwaggerInterpreter
 
 object BackendRoutes:
-
-  def interpreter[F[_]: Async] = Http4sServerInterpreter[F]()
 
   def jokeRoutes[F[_]: Sync](J: Jokes[F]): HttpRoutes[F] =
     val dsl = new Http4sDsl[F] {}
@@ -37,17 +28,6 @@ object BackendRoutes:
         resp <- Ok(users)
       } yield resp
     }
-
-  def systemInfoRoutes[F[_]: Async](J: SystemInfo[F]): HttpRoutes[F] =
-    interpreter[F].toRoutes(systenInfoEndpoint.serverLogic(_ => J.get.map(Right(_))))
-
-  val systenInfoEndpoint = endpoint.get
-    .in("info")
-    .out(jsonBody[SystemInfo.Info])
-
-  def swaggerEndpoints[F[_]] = SwaggerInterpreter().fromEndpoints[F](List(systenInfoEndpoint), "Openschool", "1.0")
-
-  def swaggerRoute[F[_]: Async] = interpreter[F].toRoutes(swaggerEndpoints)
 
   def helloWorldRoutes[F[_]: Sync](H: HelloWorld[F]): HttpRoutes[F] =
     val dsl = new Http4sDsl[F] {}
