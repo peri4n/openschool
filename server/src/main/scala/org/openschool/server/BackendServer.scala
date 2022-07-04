@@ -39,6 +39,7 @@ object BackendServer:
         BackendRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
           BackendRoutes.systemInfoRoutes[F](systemInfoAlg) <+>
           BackendRoutes.jokeRoutes[F](jokeAlg) <+>
+          BackendRoutes.swaggerRoute[F] <+>
           BackendRoutes.usersRoutes[F](users)
       ).orNotFound
 
