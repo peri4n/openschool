@@ -1,5 +1,8 @@
 package org.openschool.server
 
+import cats.Applicative
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigFactory
 import cats.effect.{Async, Resource}
 import cats.syntax.all._
 import com.comcast.ip4s._
@@ -14,8 +17,13 @@ import org.http4s.Uri
 
 object BackendServer:
 
+  def config[F[_]: Applicative]: Resource[F, Config] = 
+    Resource.pure(ConfigFactory.load())
+
   def stream[F[_]: Async]: Stream[F, Nothing] = {
     for {
+      config <- Stream.resource(config[F])
+      port = config.getInt("port")
       client <- Stream.resource(EmberClientBuilder.default[F].build)
       helloWorldAlg = HelloWorld.impl[F]
       systemInfoAlg = SystemInfo.impl[F]
@@ -25,8 +33,8 @@ object BackendServer:
       corsOriginSettings = CORS.policy
         .withAllowOriginHost(
           Set(
-            Origin.Host(Uri.Scheme.https, Uri.RegName("localhost"), 8000.some),
-            Origin.Host(Uri.Scheme.http, Uri.RegName("localhost"), 8000.some)
+            Origin.Host(Uri.Scheme.https, Uri.RegName("localhost"), port.some),
+            Origin.Host(Uri.Scheme.http, Uri.RegName("localhost"), port.some)
           )
         )
         .withAllowCredentials(false)
@@ -50,7 +58,7 @@ object BackendServer:
         EmberServerBuilder
           .default[F]
           .withHost(ipv4"0.0.0.0")
-          .withPort(port"8080")
+          .withPort(Port.fromInt(port).get)
           .withHttpApp(finalHttpApp)
           .build >>
           Resource.eval(Async[F].never)
