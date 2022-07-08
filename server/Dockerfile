@@ -1,19 +1,18 @@
-FROM hseeberger/scala-sbt:17.0.1_1.6.1_3.1.0 as build
+# 1st Docker build stage: build the project with Gradle
+FROM gradle:7.4.2-jdk18 as builder
+WORKDIR /project
+COPY . /project/
+RUN gradle assemble --no-daemon
 
-WORKDIR /app
+# 2nd Docker build stage: copy builder output and configure entry point
+FROM eclipse-temurin:18
+ENV APP_DIR /application
+ENV APP_FILE build/container-uber-jar.jar
 
-COPY build.sbt .
+EXPOSE 8080
 
-COPY project/build.properties project/
+WORKDIR $APP_DIR
+COPY --from=builder /project/build/libs/*-fat.jar $APP_DIR/$APP_FILE
 
-COPY project/plugins.sbt project/
-
-COPY src src
-
-RUN sbt assembly
-
-FROM openjdk:17.0.2-slim
-
-COPY --from=build /app/target/scala-3.1.0/server-assembly-0.0.1-SNAPSHOT.jar ./
-
-CMD java -jar server-assembly-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["sh", "-c"]
+CMD ["exec java -jar $APP_FILE"]
