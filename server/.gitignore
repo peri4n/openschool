@@ -5,7 +5,8 @@ build/
 .vertx/
 
 ### Eclipse ###
-
+.project
+.classpath
 .metadata
 bin/
 tmp/

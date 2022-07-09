@@ -1,10 +1,9 @@
 package org.openschool.server;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.time.LocalTime;
+import java.util.stream.StreamSupport;
 
 import io.vertx.ext.auth.JWTOptions;
 import io.vertx.ext.auth.jwt.JWTAuth;
@@ -49,7 +48,7 @@ public class WebVerticle extends AbstractVerticle {
     var webClient = WebClient.create(vertx);
 
     var promise = Promise.<JWTAuth>promise();
-    // fetch JWKS from `/certs` endpoint
+
     webClient.get(jwksUri.getPort(), jwksUri.getHost(), jwksUri.getPath())
         .as(BodyCodec.jsonObject())
         .send(ar -> {
@@ -63,18 +62,18 @@ public class WebVerticle extends AbstractVerticle {
           var keys = jwksResponse.getJsonArray("keys");
 
           // Configure JWT validation options
-          var jwtOptions = new JWTOptions();
-          jwtOptions.setIssuer(issuer);
+          var jwtOptions = new JWTOptions()
+              .setIssuer(issuer);
 
           // extract JWKS from keys array
-          var jwks = ((List<Object>) keys.getList()).stream()
-              .map(o -> new JsonObject((Map<String, Object>) o))
+          var jwks = StreamSupport.stream(keys.spliterator(), false)
+              .map(JsonObject::mapFrom)
               .collect(Collectors.toList());
 
           // configure JWTAuth
-          var jwtAuthOptions = new JWTAuthOptions();
-          jwtAuthOptions.setJwks(jwks);
-          jwtAuthOptions.setJWTOptions(jwtOptions);
+          var jwtAuthOptions = new JWTAuthOptions()
+              .setJwks(jwks)
+              .setJWTOptions(jwtOptions);
 
           JWTAuth jwtAuth = JWTAuth.create(vertx, jwtAuthOptions);
           promise.complete(jwtAuth);
