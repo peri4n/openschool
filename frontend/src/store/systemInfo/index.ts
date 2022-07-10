@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 import * as api from "../../api";
 
 interface SystemInfoState {
@@ -7,8 +8,9 @@ interface SystemInfoState {
 
 export const fetchSystemInfo = createAsyncThunk(
   "systemInfo/fetchSystemInfo",
-  async (arg, thunkAPI) => {
-    return await api.fetchSystemInfo()
+  async (arg, { getState }) => {
+    const state = (getState() as RootState).userInfo
+    return await api.fetchSystemInfo(state.token)
   }
 );
 

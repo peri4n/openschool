@@ -1,8 +1,6 @@
 package org.openschool.server;
 
-import java.net.URI;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import io.vertx.ext.auth.JWTOptions;
@@ -18,6 +16,7 @@ import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.codec.BodyCodec;
 import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.JWTAuthHandler;
+import io.vertx.ext.web.handler.LoggerHandler;
 
 public class WebVerticle extends AbstractVerticle {
 
@@ -28,38 +27,31 @@ public class WebVerticle extends AbstractVerticle {
   }
 
   @Override
-  public void start(Promise<Void> startPromise) throws Exception {
+  public void start() {
     setupJwtAuth()
         .compose(this::setupRouter)
         .compose(this::startServer)
-        .onComplete(startPromise::handle);
+        .onFailure(t -> vertx.setTimer(1000L, i -> start()));
   }
 
   private Future<JWTAuth> setupJwtAuth() {
-    var jwtConfig = config.getJsonObject("jwt");
-    var issuer = jwtConfig.getString("issuer");
-    var issuerUri = URI.create(issuer);
-
-    // derive JWKS uri from Keycloak issuer URI
-    var jwksUri = URI.create(jwtConfig.getString("jwksUri", String.format("%s://%s:%d%s",
-        issuerUri.getScheme(), "keycloak", 8080,
-        issuerUri.getPath() + "/protocol/openid-connect/certs")));
-
     var webClient = WebClient.create(vertx);
 
-    var promise = Promise.<JWTAuth>promise();
+    var keycloakConfig = config.getJsonObject("keycloak");
+    var kcHostname = keycloakConfig.getString("hostname");
+    var kcPort = keycloakConfig.getInteger("port");
+    var kcRealm = keycloakConfig.getString("realm");
+    var issuer = keycloakConfig.getString("issuer");
 
-    webClient.get(jwksUri.getPort(), jwksUri.getHost(), jwksUri.getPath())
+    return webClient.get(kcPort, kcHostname, "/auth/realms/" + kcRealm + "/protocol/openid-connect/certs")
         .as(BodyCodec.jsonObject())
-        .send(ar -> {
-          if (ar.failed()) {
-            promise.fail(ar.cause());
-          }
-
-          var response = ar.result();
-
+        .send()
+        .compose(response -> {
           var jwksResponse = response.body();
           var keys = jwksResponse.getJsonArray("keys");
+          if (keys == null) {
+            return Future.failedFuture("");
+          }
 
           // Configure JWT validation options
           var jwtOptions = new JWTOptions()
@@ -68,26 +60,24 @@ public class WebVerticle extends AbstractVerticle {
           // extract JWKS from keys array
           var jwks = StreamSupport.stream(keys.spliterator(), false)
               .map(JsonObject::mapFrom)
-              .collect(Collectors.toList());
+              .toList();
 
           // configure JWTAuth
           var jwtAuthOptions = new JWTAuthOptions()
               .setJwks(jwks)
               .setJWTOptions(jwtOptions);
 
-          JWTAuth jwtAuth = JWTAuth.create(vertx, jwtAuthOptions);
-          promise.complete(jwtAuth);
+          var jwtAuth = JWTAuth.create(vertx, jwtAuthOptions);
+          return Future.succeededFuture(jwtAuth);
         });
-
-    return promise.future();
   }
 
   private Future<Router> setupRouter(JWTAuth auth) {
     var router = Router.router(vertx);
+    router.route().handler(CorsHandler.create("http://localhost:8000"));
 
     router.route().handler(JWTAuthHandler.create(auth));
-
-    router.route().handler(CorsHandler.create("http://localhost:8000"));
+    router.route().handler(LoggerHandler.create());
 
     router.get("/info").handler(this::handleInfo);
     return Future.succeededFuture(router);

@@ -8,9 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
-import { fetchSystemInfo } from "../../store/systemInfo";
-import { useEffect } from "react";
-import { RootState, useAppDispatch } from "../../store";
+import { RootState } from "../../store";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -29,12 +27,6 @@ const TopBar = (props: TopBarProps) => {
   const classes = useStyles();
 
   const navigate = useNavigate();
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-      dispatch(fetchSystemInfo());
-  }, []);
 
   return (
     <AppBar position="fixed" className={classes.appBar}>

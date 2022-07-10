@@ -9,6 +9,7 @@ import { ReactKeycloakProvider } from "@react-keycloak/web";
 import { LinearProgress } from "@material-ui/core";
 import { BrowserRouter as Router } from "react-router-dom";
 import { setUserInfo } from "./store/userInfo";
+import { fetchSystemInfo } from "./store/systemInfo";
 
 const eventLogger = (event: string, error: unknown) => {
   switch (event) {
@@ -19,15 +20,12 @@ const eventLogger = (event: string, error: unknown) => {
           lastName: profile.lastName!,
           token: keycloak.token!
           }))
+        store.dispatch(fetchSystemInfo())
       })
       break;
     default:
       break;
   }
-}
-
-const tokenLogger = (tokens: unknown) => {
-  console.log('onKeycloakTokens', tokens)
 }
 
 ReactDOM.render(
@@ -36,7 +34,6 @@ ReactDOM.render(
       initOptions={initOptions}
       authClient={keycloak}
       onEvent={eventLogger}
-      onTokens={tokenLogger}
       LoadingComponent={<LinearProgress />}
     >
       <Provider store={store}>

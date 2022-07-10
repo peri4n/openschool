@@ -7,19 +7,23 @@ const backendClient = axios.create({
 
 export async function fetchStudents(token: string): Promise<Student[]> {
   return backendClient
-  .get("/users", {
-    headers: {
-      'Authorization': `bearer ${token}`
-    }
-  })
-  .then(resp => resp.data.students)
+    .get("/users", {
+      headers: {
+        'Authorization': `bearer ${token}`
+      }
+    })
+    .then(resp => resp.data.students)
 }
- 
+
 type FetchSystemInfoResponse = { schoolName: string }
 
-export async function fetchSystemInfo(): Promise<string> {
+export async function fetchSystemInfo(token: string): Promise<string> {
   return backendClient
-    .get<FetchSystemInfoResponse>("/info")
+    .get<FetchSystemInfoResponse>("/info", {
+      headers: {
+        'Authorization': `bearer ${token}`
+      }
+    })
     .then(resp => resp.data.schoolName)
 }
 

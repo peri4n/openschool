@@ -17,7 +17,7 @@ public class MainVerticle extends AbstractVerticle {
   public void start(Promise<Void> bootstrap) throws Exception {
     initConfig(bootstrap)
         .compose(this::deployVerticles)
-        .onComplete(bootstrap::handle);
+        .onComplete(bootstrap);
   }
 
   private Future<Startup> initConfig(Promise<Void> bootstrap) {
@@ -26,12 +26,13 @@ public class MainVerticle extends AbstractVerticle {
         .setType("file")
         .setConfig(new JsonObject().put("path", "config.yaml"));
 
-    var envConfigOptions = new ConfigStoreOptions()
-        .setType("env");
+    var sysPropConfigOptions = new ConfigStoreOptions()
+        .setType("sys")
+        .setConfig(new JsonObject().put("hierarchical", true));
 
     var configRetrieverOpts = new ConfigRetrieverOptions()
         .addStore(yamlConfigOpts)
-        .addStore(envConfigOptions);
+        .addStore(sysPropConfigOptions);
 
     var configRetriever = ConfigRetriever.create(vertx, configRetrieverOpts);
 
