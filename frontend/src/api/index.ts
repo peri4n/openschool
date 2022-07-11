@@ -1,18 +1,25 @@
 import { Student } from "../model/Student"
 import axios from "axios";
+import KcAdminClient from '@keycloak/keycloak-admin-client';
 
 const backendClient = axios.create({
   baseURL: "http://localhost:8080"
 })
 
+
+function createKeycloakClient(accessToken: string) {
+  const kcAdminClient = new KcAdminClient({
+    realmName: "openschool",
+    baseUrl: "http://localhost:8088/auth",
+  });
+
+  kcAdminClient.setAccessToken(accessToken)
+  return kcAdminClient
+}
+
 export async function fetchStudents(token: string): Promise<Student[]> {
-  return backendClient
-    .get("/users", {
-      headers: {
-        'Authorization': `bearer ${token}`
-      }
-    })
-    .then(resp => resp.data.students)
+  const resp = await createKeycloakClient(token).users.find()
+  return resp.map(userRep => new Student(userRep.id, userRep.firstName, userRep.lastName))
 }
 
 type FetchSystemInfoResponse = { schoolName: string }

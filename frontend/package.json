@@ -8,6 +8,7 @@
     "build:prod": "npx webpack b --env production"
   },
   "dependencies": {
+    "@keycloak/keycloak-admin-client": "^18.0.2",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@react-keycloak/web": "^3.4.0",

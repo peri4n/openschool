@@ -12,6 +12,7 @@ import { Student } from "../../model/Student";
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+    maxWidth: 800
   },
 });
 
@@ -21,8 +22,6 @@ type StudentsListProps = {
 
 export const StudentsList = (props: StudentsListProps) => {
   const classes = useStyles();
-  console.log(props);
-  
 
   return (
     <TableContainer component={Paper}>
