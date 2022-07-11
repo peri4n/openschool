@@ -11,14 +11,15 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { setUserInfo } from "./store/userInfo";
 import { fetchSystemInfo } from "./store/systemInfo";
 
-const eventLogger = (event: string, error: unknown) => {
+const eventLogger = (event: string) => {
   switch (event) {
     case 'onAuthSuccess':
       keycloak.loadUserProfile().then(profile => {
         store.dispatch(setUserInfo({
-          firstName: profile.firstName!,
-          lastName: profile.lastName!,
-          token: keycloak.token!
+          firstName: profile.firstName || "",
+          lastName: profile.lastName || "",
+          accessToken: keycloak.token || "",
+          refreshToken: keycloak.refreshToken || ""
           }))
         store.dispatch(fetchSystemInfo())
       })
@@ -28,12 +29,17 @@ const eventLogger = (event: string, error: unknown) => {
   }
 }
 
+const tokenLogger = (tokens: unknown) => {
+  console.log('onKeycloakTokens', tokens)
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <ReactKeycloakProvider
       initOptions={initOptions}
       authClient={keycloak}
       onEvent={eventLogger}
+      onTokens={tokenLogger}
       LoadingComponent={<LinearProgress />}
     >
       <Provider store={store}>

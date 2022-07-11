@@ -12,7 +12,7 @@ export const fetchStudents = createAsyncThunk(
   "students/fetchUsers",
   async (arg, { getState }) => {
     const state = (getState() as RootState).userInfo
-    return await api.fetchStudents(state.token)
+    return await api.fetchStudents(state.accessToken)
   }
 );
 

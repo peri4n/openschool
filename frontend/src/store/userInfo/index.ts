@@ -2,13 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SetUserInfo } from "./types";
 
 interface UserInfoState {
-  token: string,
+  accessToken: string,
+  refreshToken: string,
   firstName: string,
   lastName: string,
 }
 
 const initialState = {
-    token: "",
+    accessToken: "",
+    refreshToken: "",
     firstName: "",
     lastName: "",
   } as UserInfoState
@@ -20,7 +22,8 @@ const userInfoSlice = createSlice({
     setUserInfo(state, action: PayloadAction<SetUserInfo>) {
       state.firstName = action.payload.firstName
       state.lastName = action.payload.lastName
-      state.token = action.payload.token
+      state.accessToken = action.payload.accessToken
+      state.refreshToken = action.payload.refreshToken
     }
   }
 })

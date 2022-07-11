@@ -10,7 +10,7 @@ export const fetchSystemInfo = createAsyncThunk(
   "systemInfo/fetchSystemInfo",
   async (arg, { getState }) => {
     const state = (getState() as RootState).userInfo
-    return await api.fetchSystemInfo(state.token)
+    return await api.fetchSystemInfo(state.accessToken)
   }
 );
 

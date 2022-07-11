@@ -17,9 +17,9 @@ const HomePage = ({
 
   return (
     <div>
-      <p>
+      <h1>
         Welcome {firstName} {lastName}
-      </p>
+      </h1>
 
       <p>
         Your token is {token}
@@ -31,7 +31,7 @@ const HomePage = ({
 const mapStateToProps = (state: RootState) => ({
   firstName: getFirstName(state),
   lastName: state.userInfo.lastName,
-  token: state.userInfo.token,
+  token: state.userInfo.accessToken,
 })
 
 export default connect(mapStateToProps)(HomePage)
