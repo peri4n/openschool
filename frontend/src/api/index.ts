@@ -19,7 +19,11 @@ function createKeycloakClient(accessToken: string) {
 
 export async function fetchStudents(token: string): Promise<Student[]> {
   const resp = await createKeycloakClient(token).users.find()
-  return resp.map(userRep => new Student(userRep.id, userRep.firstName, userRep.lastName))
+  return resp.map(userRep => ({
+    id: userRep.id,
+    first: userRep.firstName,
+    last: userRep.lastName
+  }))
 }
 
 type FetchSystemInfoResponse = { schoolName: string }
