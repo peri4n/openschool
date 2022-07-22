@@ -6,3 +6,6 @@ keycloak:
   port: 8088
   realm: openschool
   issuer: http://localhost:8088/auth/realms/openschool
+
+app:
+  name: Waldorf Schule

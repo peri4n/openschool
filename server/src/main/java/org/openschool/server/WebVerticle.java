@@ -90,6 +90,6 @@ public class WebVerticle extends AbstractVerticle {
   }
 
   private void handleInfo(RoutingContext ctx) {
-    ctx.json(new JsonObject(Map.of("schoolName", "Waldorf Schule")));
+    ctx.json(new JsonObject(Map.of("schoolName", config.getJsonObject("app").getString("name"))));
   }
 }
