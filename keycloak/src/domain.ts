@@ -4,9 +4,12 @@ const SCHOOL_ENTRY_AGE = 6
 
 const SCHOOL_EXIT_AGE = 19;
 
+export const STUDENT_GROUP = "student"
 export const TEACHER_GROUP = "teacher"
 
-export const STUDENT_GROUP = "student"
+export const STUDENT_ROLE = "student"
+export const TEACHER_ROLE = "teacher"
+export const ADMIN_ROLE = "admin"
 
 export const defaultUser = {
   enabled: true,
@@ -57,7 +60,7 @@ export interface User {
   readonly emailVerified: boolean
   readonly enabled: boolean
   readonly groups: string[]
-  readonly credentials: Creds[],
+  readonly credentials: Creds[]
   readonly attributes: UserAttr
 }
 
@@ -105,9 +108,9 @@ export function teacherR(chance: any): User {
     email: chance.email(),
     firstName: chance.first({ gender: attributes.gender }),
     lastName: chance.last(),
-    groups: [STUDENT_GROUP],
+    groups: [TEACHER_GROUP],
     credentials: [password("pw")],
     attributes
   }
-};
+}
 
