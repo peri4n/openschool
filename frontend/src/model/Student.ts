@@ -1,12 +1,11 @@
-export class Student {
+export type Student = {
     id?: string;
     first?: string;
     last?: string;
+}
 
-    constructor(id?: string, firstName?: string, lastName?: string) {
-        this.id = id
-        this.first = firstName
-        this.last = lastName
-    }
-
+export type Teacher = {
+    id?: string;
+    first?: string;
+    last?: string;
 }

@@ -1,4 +1,4 @@
-import { Student } from "../model/Student"
+import {Student, Teacher} from "../model/Student"
 import axios from "axios";
 import KcAdminClient from '@keycloak/keycloak-admin-client';
 
@@ -18,7 +18,16 @@ function createKeycloakClient(accessToken: string) {
 }
 
 export async function fetchStudents(token: string): Promise<Student[]> {
-  const resp = await createKeycloakClient(token).users.find()
+  const resp = await createKeycloakClient(token).roles.findUsersWithRole({name: "student"})
+  return resp.map(userRep => ({
+    id: userRep.id,
+    first: userRep.firstName,
+    last: userRep.lastName
+  }))
+}
+
+export async function fetchTeachers(token: string): Promise<Teacher[]> {
+  const resp = await createKeycloakClient(token).roles.findUsersWithRole({name: "teacher"})
   return resp.map(userRep => ({
     id: userRep.id,
     first: userRep.firstName,

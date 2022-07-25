@@ -1,5 +1,5 @@
 import * as React from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -7,7 +7,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Student } from "../../model/Student";
+import {Student} from "../../model/Student";
+import {RootState} from "../../store";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles({
   table: {
@@ -20,7 +22,7 @@ type StudentsListProps = {
   students: Student[]
 }
 
-export const StudentsList = (props: StudentsListProps) => {
+const StudentsList = (props: StudentsListProps) => {
   const classes = useStyles();
 
   return (
@@ -46,3 +48,9 @@ export const StudentsList = (props: StudentsListProps) => {
     </TableContainer>
   );
 }
+
+const mapStateToProps = (state: RootState) => ({
+  students: state.students.entities
+})
+
+export default connect(mapStateToProps)(StudentsList)

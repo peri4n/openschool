@@ -10,6 +10,8 @@ import { LinearProgress } from "@material-ui/core";
 import { BrowserRouter as Router } from "react-router-dom";
 import { setUserInfo } from "./store/userInfo";
 import { fetchSystemInfo } from "./store/systemInfo";
+import {fetchStudents} from "./store/students";
+import {fetchTeachers} from "./store/teachers";
 
 const eventLogger = (event: string) => {
   switch (event) {
@@ -22,6 +24,8 @@ const eventLogger = (event: string) => {
           refreshToken: keycloak.refreshToken || ""
           }))
         store.dispatch(fetchSystemInfo())
+        store.dispatch(fetchStudents())
+        store.dispatch(fetchTeachers())
       })
       break;
     default:
@@ -29,17 +33,13 @@ const eventLogger = (event: string) => {
   }
 }
 
-const tokenLogger = (tokens: unknown) => {
-  console.log('onKeycloakTokens', tokens)
-}
-
 ReactDOM.render(
   <React.StrictMode>
     <ReactKeycloakProvider
       initOptions={initOptions}
       authClient={keycloak}
+      autoRefreshToken={true}
       onEvent={eventLogger}
-      onTokens={tokenLogger}
       LoadingComponent={<LinearProgress />}
     >
       <Provider store={store}>
