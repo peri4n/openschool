@@ -1,20 +1,18 @@
 import KcAdminClient from "@keycloak/keycloak-admin-client";
+import { rndSchool } from "./school";
 import {
-  STUDENT_GROUP,
-  TEACHER_GROUP,
-  User,
   student,
-  studentR,
-  teacherR,
-  TEACHER_ROLE,
-  STUDENT_ROLE,
-  ADMIN_ROLE
-} from "./domain"
-import Chance from "chance";
-
-const chance = new Chance();
+  STUDENT_GROUP,
+  teacher,
+  TEACHER_GROUP,
+} from "./user"
+import { User } from "./user"
 
 const RealmName = "openschool";
+
+export const STUDENT_ROLE = "student";
+export const TEACHER_ROLE = "teacher";
+export const ADMIN_ROLE = "admin";
 
 (async () => {
   const kcAdminClient = new KcAdminClient({
@@ -33,10 +31,10 @@ const RealmName = "openschool";
     try {
       const u = await kcAdminClient.users.create(user);
       await kcAdminClient.users.addRealmRoleMappings({ id: u.id, roles: [{ name: roleName, id: roleId }] })
-      console.log(`Created user: ${ u.id }`)
+      console.log(`Created user: ${u.id}`)
       return u
     } catch (error) {
-      console.warn(`Failed to create user: ${ user.email }`)
+      console.warn(`Failed to create user: ${user.email}`)
     }
   }
 
@@ -53,16 +51,16 @@ const RealmName = "openschool";
       })
       console.log("Created the client")
     } catch (error) {
-      console.error(`Failed to create client ${ clientId }: ${ error }`)
+      console.error(`Failed to create client ${clientId}: ${error}`)
     }
   }
 
   async function createGroup(groupName: string) {
     try {
       const group = await kcAdminClient.groups.create({ name: groupName });
-      console.log(`Created group ${ groupName } with ID: ${ group.id }`)
+      console.log(`Created group ${groupName} with ID: ${group.id}`)
     } catch (error) {
-      console.error(`Failed to create group ${ groupName }: ${ error }`)
+      console.error(`Failed to create group ${groupName}: ${error}`)
     }
   }
 
@@ -78,10 +76,10 @@ const RealmName = "openschool";
         }
       });
       const response = await kcAdminClient.roles.findOneByName({ name: roleName })
-      console.log(`Created role ${ roleName } with name: ${ response.id }`)
+      console.log(`Created role ${roleName} with name: ${response.id}`)
       return response.id
     } catch (error) {
-      console.error(`Failed to create role ${ roleName }: ${ error }`)
+      console.error(`Failed to create role ${roleName}: ${error}`)
     }
   }
 
@@ -100,33 +98,37 @@ const RealmName = "openschool";
     realmName: RealmName
   });
 
-  await createClient(`${ RealmName }-frontend`);
+  await createClient(`${RealmName}-frontend`);
 
   await createGroup(STUDENT_GROUP);
   await createGroup(TEACHER_GROUP);
 
   const studentRole = await createRole(STUDENT_ROLE, ["view-users", "view-realm"]);
   const teacherRole = await createRole(TEACHER_ROLE, ["manage-users"]);
-  await createRole(ADMIN_ROLE, ["realm-admin"]);
+  const adminRole = await createRole(ADMIN_ROLE, ["realm-admin"]);
 
   // Standard users
-  const anna = student("anna", "anna", chance)
-  const joe = student("joe", "joe", chance)
-
+  const anna = student("anna", "anna", 10)
+  const joe = teacher("joe", "joe", 40)
   await createUser(anna, STUDENT_ROLE, studentRole)
-  await createUser(joe, STUDENT_ROLE, studentRole)
+  await createUser(joe, TEACHER_ROLE, teacherRole)
 
-  // Students
-  const number_of_students = 100
-  for (let i = 0; i < number_of_students; i++) {
-    await createUser(studentR(chance), STUDENT_ROLE, studentRole)
-  }
+  const school = rndSchool()
 
-  // Teacher
-  const number_of_teachers = 50
-  for (let i = 0; i < number_of_teachers; i++) {
-    await createUser(teacherR(chance), TEACHER_ROLE, teacherRole)
-  }
+  school.classes.forEach(grade => {
+    grade.forEach(async clazz => {
+      await createGroup(clazz.name);
+
+      const teacher = clazz.teacher
+      await createUser(teacher, TEACHER_ROLE, teacherRole)
+
+      const students = clazz.students
+      students.forEach(async student => {
+        await createUser(student, STUDENT_ROLE, studentRole)
+      })
+
+    })
+  })
 })();
 
 
